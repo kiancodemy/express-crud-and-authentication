@@ -1,4 +1,12 @@
 import express from "express";
-import { getAllMovies } from "../controlers/movie.controler.js";
 export const movierouter = express.Router();
-movierouter.get("/allmovies", getAllMovies);
+
+import {
+  getAllMovies,
+  createMovies,
+  deleteMovies,
+  updateMovies,
+} from "../controlers/movie.controler.js";
+
+movierouter.route("/").get(getAllMovies).post(createMovies);
+movierouter.route("/:id").delete(deleteMovies).put(updateMovies);
