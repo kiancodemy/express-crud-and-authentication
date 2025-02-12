@@ -3,11 +3,29 @@ import { Movie } from "../model/movie.model.js";
 ///get alll movies//
 export const getAllMovies = async (req, res) => {
   try {
-    const create = await Movie.find();
-    if (create && create.length === 0) {
-      throw new Error("there is no movie");
+    let query = Movie.find();
+    if (req.query.search) {
+      query = query.find({
+        name: { $regex: req.query.search, $options: "i" },
+      });
     }
-    res.status(200).json(create);
+    if (req.query.gte) {
+      query = query.find({ year: { $gte: Number(req.query.gte) } });
+    }
+    if (req.query.lte) {
+      query = query.find({ year: { $lte: Number(req.query.lte) } });
+    }
+    if (req.query.sort) {
+      const sort = req.query.sort.split(",").join(" ");
+      query = query.sort(sort);
+    }
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+    query = query.skip(skip).limit(limit);
+    const data = await query;
+
+    res.status(200).json([{ length: data.length }, ...data]);
   } catch (err) {
     res.status(404).json({
       message: err.message,
