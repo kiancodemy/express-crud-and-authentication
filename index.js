@@ -15,6 +15,13 @@ app.use(express.json());
 
 app.use("/movie", movierouter);
 app.use("/user", userrouter);
+
+app.all("*", () => {
+  res.status(404).json({
+    message: "not available",
+  });
+});
+app.use((error, req, res, next) => {});
 app.listen(process.env.PORT, () => {
   connection();
   console.log(`connected to port ${process.env.PORT}`);

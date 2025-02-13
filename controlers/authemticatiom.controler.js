@@ -43,4 +43,14 @@ export const signup = async (req, res) => {
   }
 };
 
-export const updateprofile = async (req, res) => {};
+export const updateprofile = async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(req.user._id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};

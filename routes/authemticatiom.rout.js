@@ -4,11 +4,12 @@ import {
   login,
   logout,
   signup,
-  updateprofile,
+  updateprofile ,
 } from "../controlers/authemticatiom.controler.js";
 export const userrouter = express.Router();
 
 userrouter.post("/signup", signup);
 userrouter.post("/login", login);
 userrouter.post("/logout", logout);
-userrouter.post("/ss", userAuth);
+userrouter.post("/updateprofile", userAuth ,updateprofile);
+userrouter.post("/pipeline", userAuth);

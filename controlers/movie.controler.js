@@ -40,7 +40,7 @@ export const createMovies = async (req, res) => {
     if (!name || !year || !duration || !rating) {
       throw new Error("fill out all sections");
     }
-    console.log(req.body);
+
     const newMoviwe = await Movie.create(req.body);
     res.status(200).json(newMoviwe);
   } catch (err) {
@@ -75,5 +75,32 @@ export const updateMovies = async (req, res) => {
     res.status(404).json({
       message: err.message,
     });
+  }
+};
+export const filter = async (req, res) => {
+  try {
+    let filter = Movie.aggregate([
+      {
+        $match: { year: { $gt: Number(req.query.year) } },
+      },
+
+      {
+        $group: {
+          _id: "$name",
+          totalQuantity: { $sum: "$year" },
+          min: { $min: "$year" },
+          max: { $max: "$year" },
+          averageYear: { $avg: "$year" },
+          total: { $sum: 1 },
+        },
+      },
+      { $sort: { _id: -1 } },
+    ]);
+
+    filter = await filter;
+
+    res.status(200).json(filter);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
   }
 };
