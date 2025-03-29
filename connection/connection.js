@@ -6,5 +6,6 @@ export const connection = async () => {
     console.log("connected");
   } catch (err) {
     console.log("not--connected");
+    setTimeout(connection, 200);
   }
 };
