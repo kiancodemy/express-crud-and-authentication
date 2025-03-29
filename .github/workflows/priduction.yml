@@ -32,7 +32,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker-compose -f docker-compose.yml -f docker-compose.prod.yml build
+          docker-compose -f docker-compose.yml -f docker-compose.pro.yml build
 
       - name: Push Docker Image
         run: |
