@@ -37,5 +37,4 @@ jobs:
 
       - name: Push Docker Image
         run: |
-          docker tag kiankheirani/abbas kiankheirani/abbas:latest
-          docker push kiankheirani/abbas:latest
+          docker push ${{ secrets.USER }}/abbas:latest
